@@ -1,0 +1,607 @@
+{
+  "modelo_auditado": "HistGradientBoostingClassifier optimizado con Optuna",
+  "threshold_congelado": 0.5900000000000002,
+  "validacion_cruzada": {
+    "hgb_auc_media": 0.869230324074074,
+    "hgb_precision_media": 0.39258641712871933,
+    "hgb_recall_media": 0.7902777777777777,
+    "hgb_f1_media": 0.5244903509402203,
+    "baseline_auc_media": 0.73525958994709
+  },
+  "test": {
+    "auc_roc": 0.8681137566137566,
+    "precision": 0.4469964664310954,
+    "recall": 0.7027777777777777,
+    "f1": 0.5464362850971922,
+    "tn": 1787,
+    "fp": 313,
+    "fn": 107,
+    "tp": 253
+  },
+  "shap": {
+    "summary_plot": "reports/figures/modulo4/shap_summary_top3.png",
+    "waterfall": "reports/figures/modulo4/shap_waterfall_caso_individual.png",
+    "top3_original": [
+      {
+        "feature_original": "score_externo",
+        "mean_abs_shap": 1.2727070590690697
+      },
+      {
+        "feature_original": "ingreso_mensual",
+        "mean_abs_shap": 0.29794276905721084
+      },
+      {
+        "feature_original": "edad",
+        "mean_abs_shap": 0.15891818503749966
+      }
+    ],
+    "caso_individual_indice": "7136",
+    "caso_individual_probabilidad": 0.9062720626253186
+  },
+  "equidad": [
+    {
+      "variable_grupo": "score_disponible",
+      "n_grupos_elegibles": 2,
+      "equal_opportunity_difference": 0.49082568807339455,
+      "fpr_difference": 0.8802955665024631,
+      "demographic_parity_difference": 0.8425266903914591,
+      "recall_max_grupo": "Score faltante",
+      "recall_min_grupo": "Score disponible"
+    },
+    {
+      "variable_grupo": "nivel_educativo",
+      "n_grupos_elegibles": 5,
+      "equal_opportunity_difference": 0.30707070707070716,
+      "fpr_difference": 0.0824674445153925,
+      "demographic_parity_difference": 0.18385029973051753,
+      "recall_max_grupo": "PRIMARIA",
+      "recall_min_grupo": "UNIVERSITARIO"
+    },
+    {
+      "variable_grupo": "ciudad",
+      "n_grupos_elegibles": 12,
+      "equal_opportunity_difference": 0.28046594982078854,
+      "fpr_difference": 0.06235945338176786,
+      "demographic_parity_difference": 0.10499999999999998,
+      "recall_max_grupo": "CUCUTA",
+      "recall_min_grupo": "MEDELLIN"
+    },
+    {
+      "variable_grupo": "grupo_ingreso",
+      "n_grupos_elegibles": 3,
+      "equal_opportunity_difference": 0.24513485831341753,
+      "fpr_difference": 0.11055400054364198,
+      "demographic_parity_difference": 0.17124070897655805,
+      "recall_max_grupo": "(1572973.0, 2996317.5]",
+      "recall_min_grupo": "(2996317.5, inf]"
+    },
+    {
+      "variable_grupo": "grupo_edad",
+      "n_grupos_elegibles": 5,
+      "equal_opportunity_difference": 0.23185011709601877,
+      "fpr_difference": 0.11042131134330764,
+      "demographic_parity_difference": 0.17723387723387724,
+      "recall_max_grupo": "<30",
+      "recall_min_grupo": "60+"
+    },
+    {
+      "variable_grupo": "grupo_vinculacion",
+      "n_grupos_elegibles": 4,
+      "equal_opportunity_difference": 0.11274509803921573,
+      "fpr_difference": 0.05328125980299893,
+      "demographic_parity_difference": 0.027512839325018357,
+      "recall_max_grupo": "(2020.0, 2022.0]",
+      "recall_min_grupo": "(-inf, 2017.0]"
+    }
+  ],
+  "robustez_score_externo": [
+    {
+      "faltante_adicional_score": 0.0,
+      "auc_media": 0.8681137566137566,
+      "auc_std": 0.0,
+      "ap_media": 0.570792222982258,
+      "precision_media": 0.4469964664310954,
+      "recall_media": 0.7027777777777777,
+      "f1_media": 0.5464362850971922,
+      "f1_std": 0.0
+    },
+    {
+      "faltante_adicional_score": 0.1,
+      "auc_media": 0.8223239087301588,
+      "auc_std": 0.003477982537248233,
+      "ap_media": 0.3960525170169893,
+      "precision_media": 0.3497181103480228,
+      "recall_media": 0.7347222222222223,
+      "f1_media": 0.47387286819662994,
+      "f1_std": 0.0036655769287015556
+    },
+    {
+      "faltante_adicional_score": 0.2,
+      "auc_media": 0.7815388888888888,
+      "auc_std": 0.00657048307505747,
+      "ap_media": 0.3232604652046803,
+      "precision_media": 0.2909809195782011,
+      "recall_media": 0.765,
+      "f1_media": 0.42159532931356986,
+      "f1_std": 0.00641429367879937
+    },
+    {
+      "faltante_adicional_score": 0.3,
+      "auc_media": 0.7386966931216932,
+      "auc_std": 0.006260889973999658,
+      "ap_media": 0.27633638952047046,
+      "precision_media": 0.2490418862222687,
+      "recall_media": 0.7866666666666666,
+      "f1_media": 0.3783143379649102,
+      "f1_std": 0.004590648213790629
+    },
+    {
+      "faltante_adicional_score": 0.5,
+      "auc_media": 0.6780267857142858,
+      "auc_std": 0.009212373854500107,
+      "ap_media": 0.23141476123604132,
+      "precision_media": 0.20074142001760736,
+      "recall_media": 0.8456944444444444,
+      "f1_media": 0.3244636773086726,
+      "f1_std": 0.005016287568670009
+    }
+  ],
+  "brechas_subgrupos": [
+    {
+      "variable_grupo": "nivel_educativo",
+      "metrica": "tasa_alerta",
+      "brecha_max_min": 0.18385029973051753,
+      "grupo_max": "SECUNDARIA",
+      "valor_max": 0.3269537480063796,
+      "grupo_min": "UNIVERSITARIO",
+      "valor_min": 0.14310344827586208,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "nivel_educativo",
+      "metrica": "precision",
+      "brecha_max_min": 0.2643549808992066,
+      "grupo_max": "SECUNDARIA",
+      "valor_max": 0.5414634146341464,
+      "grupo_min": "UNIVERSITARIO",
+      "valor_min": 0.27710843373493976,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "nivel_educativo",
+      "metrica": "recall_tpr",
+      "brecha_max_min": 0.30707070707070716,
+      "grupo_max": "PRIMARIA",
+      "valor_max": 0.8181818181818182,
+      "grupo_min": "UNIVERSITARIO",
+      "valor_min": 0.5111111111111111,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "nivel_educativo",
+      "metrica": "f1",
+      "brecha_max_min": 0.27672815186246413,
+      "grupo_max": "SECUNDARIA",
+      "valor_max": 0.6361031518624641,
+      "grupo_min": "UNIVERSITARIO",
+      "valor_min": 0.359375,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "nivel_educativo",
+      "metrica": "fpr",
+      "brecha_max_min": 0.0824674445153925,
+      "grupo_max": "SECUNDARIA",
+      "valor_max": 0.19461697722567287,
+      "grupo_min": "UNIVERSITARIO",
+      "valor_min": 0.11214953271028037,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "nivel_educativo",
+      "metrica": "fnr",
+      "brecha_max_min": 0.30707070707070705,
+      "grupo_max": "UNIVERSITARIO",
+      "valor_max": 0.4888888888888889,
+      "grupo_min": "PRIMARIA",
+      "valor_min": 0.18181818181818182,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "nivel_educativo",
+      "metrica": "auc_roc",
+      "brecha_max_min": 0.08056532941402417,
+      "grupo_max": "PRIMARIA",
+      "valor_max": 0.9061520376175548,
+      "grupo_min": "UNIVERSITARIO",
+      "valor_min": 0.8255867082035306,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "ciudad",
+      "metrica": "tasa_alerta",
+      "brecha_max_min": 0.10499999999999998,
+      "grupo_max": "CUCUTA",
+      "valor_max": 0.305,
+      "grupo_min": "BUCARAMANGA",
+      "valor_min": 0.2,
+      "n_grupos_elegibles": 12
+    },
+    {
+      "variable_grupo": "ciudad",
+      "metrica": "precision",
+      "brecha_max_min": 0.13650793650793647,
+      "grupo_max": "MEDELLIN",
+      "valor_max": 0.5142857142857142,
+      "grupo_min": "PEREIRA",
+      "valor_min": 0.37777777777777777,
+      "n_grupos_elegibles": 12
+    },
+    {
+      "variable_grupo": "ciudad",
+      "metrica": "recall_tpr",
+      "brecha_max_min": 0.28046594982078854,
+      "grupo_max": "CUCUTA",
+      "valor_max": 0.8611111111111112,
+      "grupo_min": "MEDELLIN",
+      "valor_min": 0.5806451612903226,
+      "n_grupos_elegibles": 12
+    },
+    {
+      "variable_grupo": "ciudad",
+      "metrica": "f1",
+      "brecha_max_min": 0.1391752577319587,
+      "grupo_max": "CUCUTA",
+      "valor_max": 0.6391752577319587,
+      "grupo_min": "IBAGUE",
+      "valor_min": 0.5,
+      "n_grupos_elegibles": 12
+    },
+    {
+      "variable_grupo": "ciudad",
+      "metrica": "fpr",
+      "brecha_max_min": 0.06235945338176786,
+      "grupo_max": "CUCUTA",
+      "valor_max": 0.18292682926829268,
+      "grupo_min": "MEDELLIN",
+      "valor_min": 0.12056737588652482,
+      "n_grupos_elegibles": 12
+    },
+    {
+      "variable_grupo": "ciudad",
+      "metrica": "fnr",
+      "brecha_max_min": 0.28046594982078854,
+      "grupo_max": "MEDELLIN",
+      "valor_max": 0.41935483870967744,
+      "grupo_min": "CUCUTA",
+      "valor_min": 0.1388888888888889,
+      "n_grupos_elegibles": 12
+    },
+    {
+      "variable_grupo": "ciudad",
+      "metrica": "auc_roc",
+      "brecha_max_min": 0.08352027501756487,
+      "grupo_max": "CUCUTA",
+      "valor_max": 0.9043021680216802,
+      "grupo_min": "IBAGUE",
+      "valor_min": 0.8207818930041153,
+      "n_grupos_elegibles": 12
+    },
+    {
+      "variable_grupo": "grupo_edad",
+      "metrica": "tasa_alerta",
+      "brecha_max_min": 0.17723387723387724,
+      "grupo_max": "<30",
+      "valor_max": 0.3282828282828283,
+      "grupo_min": "60+",
+      "valor_min": 0.15104895104895105,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "grupo_edad",
+      "metrica": "precision",
+      "brecha_max_min": 0.10819790538100399,
+      "grupo_max": "<30",
+      "valor_max": 0.5025641025641026,
+      "grupo_min": "50-59",
+      "valor_min": 0.39436619718309857,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "grupo_edad",
+      "metrica": "recall_tpr",
+      "brecha_max_min": 0.23185011709601877,
+      "grupo_max": "<30",
+      "valor_max": 0.8032786885245902,
+      "grupo_min": "60+",
+      "valor_min": 0.5714285714285714,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "grupo_edad",
+      "metrica": "f1",
+      "brecha_max_min": 0.12272130872951625,
+      "grupo_max": "<30",
+      "valor_max": 0.6182965299684543,
+      "grupo_min": "50-59",
+      "valor_min": 0.49557522123893805,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "grupo_edad",
+      "metrica": "fpr",
+      "brecha_max_min": 0.11042131134330764,
+      "grupo_max": "<30",
+      "valor_max": 0.2055084745762712,
+      "grupo_min": "60+",
+      "valor_min": 0.09508716323296355,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "grupo_edad",
+      "metrica": "fnr",
+      "brecha_max_min": 0.23185011709601872,
+      "grupo_max": "60+",
+      "valor_max": 0.42857142857142855,
+      "grupo_min": "<30",
+      "valor_min": 0.19672131147540983,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "grupo_edad",
+      "metrica": "auc_roc",
+      "brecha_max_min": 0.0672508723705697,
+      "grupo_max": "<30",
+      "valor_max": 0.8920446651847735,
+      "grupo_min": "40-49",
+      "valor_min": 0.8247937928142038,
+      "n_grupos_elegibles": 5
+    },
+    {
+      "variable_grupo": "grupo_ingreso",
+      "metrica": "tasa_alerta",
+      "brecha_max_min": 0.17124070897655805,
+      "grupo_max": "(1572973.0, 2996317.5]",
+      "valor_max": 0.29545454545454547,
+      "grupo_min": "(2996317.5, inf]",
+      "valor_min": 0.12421383647798742,
+      "n_grupos_elegibles": 3
+    },
+    {
+      "variable_grupo": "grupo_ingreso",
+      "metrica": "precision",
+      "brecha_max_min": 0.07937266141230792,
+      "grupo_max": "(-inf, 1572973.0]",
+      "valor_max": 0.4591194968553459,
+      "grupo_min": "(2996317.5, inf]",
+      "valor_min": 0.379746835443038,
+      "n_grupos_elegibles": 3
+    },
+    {
+      "variable_grupo": "grupo_ingreso",
+      "metrica": "recall_tpr",
+      "brecha_max_min": 0.24513485831341753,
+      "grupo_max": "(1572973.0, 2996317.5]",
+      "valor_max": 0.7623762376237624,
+      "grupo_min": "(2996317.5, inf]",
+      "valor_min": 0.5172413793103449,
+      "n_grupos_elegibles": 3
+    },
+    {
+      "variable_grupo": "grupo_ingreso",
+      "metrica": "f1",
+      "brecha_max_min": 0.13241416599080835,
+      "grupo_max": "(1572973.0, 2996317.5]",
+      "valor_max": 0.5703703703703704,
+      "grupo_min": "(2996317.5, inf]",
+      "valor_min": 0.43795620437956206,
+      "n_grupos_elegibles": 3
+    },
+    {
+      "variable_grupo": "grupo_ingreso",
+      "metrica": "fpr",
+      "brecha_max_min": 0.11055400054364198,
+      "grupo_max": "(1572973.0, 2996317.5]",
+      "valor_max": 0.19532908704883228,
+      "grupo_min": "(2996317.5, inf]",
+      "valor_min": 0.0847750865051903,
+      "n_grupos_elegibles": 3
+    },
+    {
+      "variable_grupo": "grupo_ingreso",
+      "metrica": "fnr",
+      "brecha_max_min": 0.24513485831341758,
+      "grupo_max": "(2996317.5, inf]",
+      "valor_max": 0.4827586206896552,
+      "grupo_min": "(1572973.0, 2996317.5]",
+      "valor_min": 0.2376237623762376,
+      "n_grupos_elegibles": 3
+    },
+    {
+      "variable_grupo": "grupo_ingreso",
+      "metrica": "auc_roc",
+      "brecha_max_min": 0.01481836156753269,
+      "grupo_max": "(2996317.5, inf]",
+      "valor_max": 0.8756264168953585,
+      "grupo_min": "(1572973.0, 2996317.5]",
+      "valor_min": 0.8608080553278258,
+      "n_grupos_elegibles": 3
+    },
+    {
+      "variable_grupo": "grupo_vinculacion",
+      "metrica": "tasa_alerta",
+      "brecha_max_min": 0.027512839325018357,
+      "grupo_max": "(-inf, 2017.0]",
+      "valor_max": 0.2473404255319149,
+      "grupo_min": "(2020.0, 2022.0]",
+      "valor_min": 0.21982758620689655,
+      "n_grupos_elegibles": 4
+    },
+    {
+      "variable_grupo": "grupo_vinculacion",
+      "metrica": "precision",
+      "brecha_max_min": 0.13251106894370657,
+      "grupo_max": "(2020.0, 2022.0]",
+      "valor_max": 0.5196078431372549,
+      "grupo_min": "(-inf, 2017.0]",
+      "valor_min": 0.3870967741935484,
+      "n_grupos_elegibles": 4
+    },
+    {
+      "variable_grupo": "grupo_vinculacion",
+      "metrica": "recall_tpr",
+      "brecha_max_min": 0.11274509803921573,
+      "grupo_max": "(2020.0, 2022.0]",
+      "valor_max": 0.7794117647058824,
+      "grupo_min": "(-inf, 2017.0]",
+      "valor_min": 0.6666666666666666,
+      "n_grupos_elegibles": 4
+    },
+    {
+      "variable_grupo": "grupo_vinculacion",
+      "metrica": "f1",
+      "brecha_max_min": 0.13373349339735896,
+      "grupo_max": "(2020.0, 2022.0]",
+      "valor_max": 0.6235294117647059,
+      "grupo_min": "(-inf, 2017.0]",
+      "valor_min": 0.4897959183673469,
+      "n_grupos_elegibles": 4
+    },
+    {
+      "variable_grupo": "grupo_vinculacion",
+      "metrica": "fpr",
+      "brecha_max_min": 0.05328125980299893,
+      "grupo_max": "(-inf, 2017.0]",
+      "valor_max": 0.17701863354037267,
+      "grupo_min": "(2020.0, 2022.0]",
+      "valor_min": 0.12373737373737374,
+      "n_grupos_elegibles": 4
+    },
+    {
+      "variable_grupo": "grupo_vinculacion",
+      "metrica": "fnr",
+      "brecha_max_min": 0.11274509803921567,
+      "grupo_max": "(-inf, 2017.0]",
+      "valor_max": 0.3333333333333333,
+      "grupo_min": "(2020.0, 2022.0]",
+      "valor_min": 0.22058823529411764,
+      "n_grupos_elegibles": 4
+    },
+    {
+      "variable_grupo": "grupo_vinculacion",
+      "metrica": "auc_roc",
+      "brecha_max_min": 0.03449042564834337,
+      "grupo_max": "(2022.0, inf]",
+      "valor_max": 0.8898700562058475,
+      "grupo_min": "(2017.0, 2020.0]",
+      "valor_min": 0.8553796305575041,
+      "n_grupos_elegibles": 4
+    },
+    {
+      "variable_grupo": "score_disponible",
+      "metrica": "tasa_alerta",
+      "brecha_max_min": 0.8425266903914591,
+      "grupo_max": "Score faltante",
+      "valor_max": 1.0,
+      "grupo_min": "Score disponible",
+      "valor_min": 0.15747330960854092,
+      "n_grupos_elegibles": 2
+    },
+    {
+      "variable_grupo": "score_disponible",
+      "metrica": "precision",
+      "brecha_max_min": 0.35625199872081864,
+      "grupo_max": "Score faltante",
+      "valor_max": 0.6698113207547169,
+      "grupo_min": "Score disponible",
+      "valor_min": 0.3135593220338983,
+      "n_grupos_elegibles": 2
+    },
+    {
+      "variable_grupo": "score_disponible",
+      "metrica": "recall_tpr",
+      "brecha_max_min": 0.49082568807339455,
+      "grupo_max": "Score faltante",
+      "valor_max": 1.0,
+      "grupo_min": "Score disponible",
+      "valor_min": 0.5091743119266054,
+      "n_grupos_elegibles": 2
+    },
+    {
+      "variable_grupo": "score_disponible",
+      "metrica": "f1",
+      "brecha_max_min": 0.41414799889376164,
+      "grupo_max": "Score faltante",
+      "valor_max": 0.8022598870056498,
+      "grupo_min": "Score disponible",
+      "valor_min": 0.3881118881118881,
+      "n_grupos_elegibles": 2
+    },
+    {
+      "variable_grupo": "score_disponible",
+      "metrica": "fpr",
+      "brecha_max_min": 0.8802955665024631,
+      "grupo_max": "Score faltante",
+      "valor_max": 1.0,
+      "grupo_min": "Score disponible",
+      "valor_min": 0.11970443349753694,
+      "n_grupos_elegibles": 2
+    },
+    {
+      "variable_grupo": "score_disponible",
+      "metrica": "fnr",
+      "brecha_max_min": 0.4908256880733945,
+      "grupo_max": "Score disponible",
+      "valor_max": 0.4908256880733945,
+      "grupo_min": "Score faltante",
+      "valor_min": 0.0,
+      "n_grupos_elegibles": 2
+    },
+    {
+      "variable_grupo": "score_disponible",
+      "metrica": "auc_roc",
+      "brecha_max_min": 0.1658260540783455,
+      "grupo_max": "Score disponible",
+      "valor_max": 0.8174357120260316,
+      "grupo_min": "Score faltante",
+      "valor_min": 0.6516096579476861,
+      "n_grupos_elegibles": 2
+    }
+  ],
+  "riesgos": [
+    {
+      "riesgo": "Ausencia de score_externo usada como señal adversa",
+      "severidad": "Alta",
+      "probabilidad": "Media-Alta",
+      "impacto_negocio": "212 casos de test sin score; tasa de alerta=100.0% y FPR=100.0%. Puede generar revisiones o restricciones injustificadas.",
+      "mitigacion_realizable": "Ruta obligatoria de revisión humana; auditar el mecanismo de ausencia y prohibir decisiones adversas basadas únicamente en el faltante."
+    },
+    {
+      "riesgo": "Brechas de desempeño entre subgrupos",
+      "severidad": "Alta",
+      "probabilidad": "Media",
+      "impacto_negocio": "Mayor Equal Opportunity Difference=0.4908 en score_disponible. Puede producir diferente capacidad de detección entre segmentos.",
+      "mitigacion_realizable": "Monitorear mensualmente recall/TPR, FPR, FNR y EOD por subgrupo; investigar y ajustar si las brechas aumentan."
+    },
+    {
+      "riesgo": "Falsos positivos en decisiones de crédito",
+      "severidad": "Media-Alta",
+      "probabilidad": "Alta",
+      "impacto_negocio": "313 falsos positivos en 2460 casos de test; 14.9% de los clientes Al día del test reciben una alerta falsa.",
+      "mitigacion_realizable": "Mantener el threshold gobernado fuera de test, revisión humana y política de excepción/apelación antes de cualquier decisión adversa."
+    },
+    {
+      "riesgo": "Generalización temporal no demostrada",
+      "severidad": "Alta",
+      "probabilidad": "Media (no medida OOT)",
+      "impacto_negocio": "0 validaciones out-of-time disponibles. El AUC test actual (0.8681) proviene de un split IID y no cuantifica la caída futura.",
+      "mitigacion_realizable": "Construir snapshots con fecha_corte/fecha_evento y exigir validación out-of-time antes de producción; monitorear drift y calibración."
+    }
+  ],
+  "recomendacion_despliegue": "Desplegar únicamente como piloto controlado y con condiciones; no usar como sistema autónomo de decisión crediticia.",
+  "limitaciones": [
+    "No hay variables de sexo, raza o etnia en el dataset disponible.",
+    "Las brechas por subgrupo son descriptivas y no demuestran discriminación causal.",
+    "No existe todavía validación out-of-time con fecha_corte/fecha_evento."
+  ]
+}
