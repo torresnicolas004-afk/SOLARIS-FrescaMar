@@ -1,29 +1,20 @@
 # Proyecto SOLARIS
 
-Prototipo funcional para estimar el riesgo de mora de clientes de **FrescaMar S.A.S.**, desarrollado para la asignatura Proyecto de Ciencia de Datos 2.
+**Sistema de apoyo para la priorización del riesgo de mora en FrescaMar S.A.S.**
 
-## Descripción del problema
+Proyecto desarrollado para la asignatura **Proyecto de Ciencia de Datos 2**.
 
-FrescaMar S.A.S. necesita identificar anticipadamente qué clientes presentan mayor riesgo de mora para apoyar las decisiones de crédito. Actualmente, la información disponible permite conocer el estado de los clientes, pero se requiere transformar estos datos en una estimación reproducible del riesgo antes de tomar decisiones de crédito.
+## Descripción
 
-## Objetivo
+FrescaMar S.A.S. necesita identificar anticipadamente qué clientes presentan
+mayor riesgo de mora para apoyar las decisiones de crédito y priorizar la revisión
+de cartera.
 
-Construir un modelo reproducible de clasificación binaria que permita estimar el riesgo de mora de los clientes y apoyar las decisiones de crédito de FrescaMar S.A.S.
+SOLARIS transforma la información histórica disponible en una probabilidad
+estimada de mora mediante un pipeline reproducible de Machine Learning.
 
-El modelo funciona como herramienta de apoyo a la decisión y no como un sistema automático de aprobación o negación de crédito.
-
-## Solución propuesta
-
-Se construyó un pipeline de Machine Learning que integra:
-
-- Limpieza y normalización de datos.
-- Auditoría de posibles variables con data leakage.
-- Preprocesamiento mediante `Pipeline` y `ColumnTransformer`.
-- Regresión Logística como línea base.
-- `HistGradientBoostingClassifier` como modelo challenger.
-- Optimización de hiperparámetros con Optuna.
-- Selección del threshold mediante predicciones Out-of-Fold.
-- Evaluación final con AUC, precision, recall y F1.
+La solución no reemplaza el juicio humano. Su propósito es apoyar la priorización
+y revisión de clientes antes de tomar decisiones crediticias.
 
 ## Dataset
 
@@ -31,21 +22,23 @@ El dataset original contiene:
 
 - 15.000 registros.
 - 11 variables.
-- 15.000 identificadores de cliente únicos.
-- Clase de interés: `Moroso`.
+- 15.000 identificadores únicos.
 
-Para el modelado se excluyeron los registros con estado `Cancelado`, obteniendo:
+Para el problema de clasificación binaria se excluyeron los registros con estado
+`Cancelado`, obteniendo:
 
 - 12.300 registros para modelado.
 - 10.500 clientes `Al día`.
 - 1.800 clientes `Moroso`.
-- Proporción de morosos: 14,63 %.
+- Prevalencia de mora: 14,63 %.
 
-Durante el preprocesamiento también se normalizaron 73 variantes de ciudad en 12 categorías finales y se verificó que no quedaran categorías sin resolver.
+La clase positiva del proyecto es:
 
-## Variables utilizadas
+`Moroso = 1`
 
-El modelo utiliza únicamente variables consideradas disponibles antes de la decisión de crédito:
+## Variables utilizadas por el modelo
+
+El modelo final utiliza únicamente:
 
 - `edad`
 - `ingreso_mensual`
@@ -54,32 +47,42 @@ El modelo utiliza únicamente variables consideradas disponibles antes de la dec
 - `nivel_educativo`
 - `ciudad`
 
-Se excluyeron variables como `saldo_actual`, `cuotas_pagadas` y `cuotas_totales` debido al riesgo de data leakage asociado a su temporalidad.
+Variables como `saldo_actual`, `cuotas_pagadas`, `cuotas_totales` y
+`estado_cuenta` fueron excluidas como predictores debido a riesgo de data leakage
+o problemas de temporalidad.
 
-## Modelado
+## Modelo final
 
-### Línea base
+El modelo seleccionado es:
 
-- Regresión Logística.
+`HistGradientBoostingClassifier`
 
-### Modelo challenger
+El proceso incluye:
 
-- HistGradientBoostingClassifier.
+- pipeline de preprocesamiento;
+- imputación y codificación;
+- validación cruzada estratificada;
+- comparación con Regresión Logística;
+- optimización mediante Optuna;
+- 50 trials;
+- validación de 5 folds;
+- selección del threshold mediante predicciones Out-of-Fold;
+- interpretación mediante SHAP;
+- análisis de robustez y equidad.
 
-### Optimización
+Semilla global:
 
-- Optuna 5.0.0.
-- 50 trials.
-- Validación cruzada estratificada de 5 folds.
-- Semilla global: 42.
+`42`
 
-La selección del threshold operativo se realizó exclusivamente mediante predicciones Out-of-Fold sobre el conjunto de entrenamiento.
+Threshold oficial:
 
-## Resultados finales
+`0.59`
+
+## Resultados principales
 
 | Métrica | Resultado |
-| --- | ---: |
-| AUC CV optimizado | 0.8692 |
+|---|---:|
+| AUC CV | 0.8692 |
 | AUC Test | 0.8681 |
 | Precision Moroso | 0.4470 |
 | Recall Moroso | 0.7028 |
@@ -87,16 +90,75 @@ La selección del threshold operativo se realizó exclusivamente mediante predic
 | Threshold | 0.59 |
 | Gap Train-Test | 0.0254 |
 
-El modelo final supera de forma clara la línea base logística y alcanza un recall superior al 70 % para la clase Moroso.
+Matriz de confusión sobre el conjunto de prueba:
+
+| Resultado | Clientes |
+|---|---:|
+| Verdadero negativo | 1.787 |
+| Falso positivo | 313 |
+| Falso negativo | 107 |
+| Verdadero positivo | 253 |
+
+En términos de negocio, SOLARIS identifica aproximadamente 7 de cada 10 clientes
+que realmente presentan mora.
+
+## Interpretabilidad
+
+El análisis SHAP identifica como variables de mayor importancia global:
+
+1. `score_externo`
+2. `ingreso_mensual`
+3. `edad`
+
+La validación también mostró una sensibilidad importante frente a la ausencia
+de `score_externo`.
+
+En el conjunto de prueba, los 212 registros sin este dato fueron clasificados
+como alerta utilizando el threshold oficial.
+
+Por esta razón, la ausencia de `score_externo` debe activar revisión humana y
+no una decisión crediticia automática.
+
+## Uso responsable
+
+SOLARIS debe utilizarse como una herramienta de apoyo.
+
+No debe utilizarse de manera autónoma para:
+
+- aprobar crédito;
+- negar crédito;
+- reducir cupos;
+- modificar condiciones contractuales;
+- realizar acciones adversas únicamente por ausencia de `score_externo`.
+
+La recomendación actual es avanzar únicamente mediante un piloto controlado,
+con supervisión humana, monitoreo de desempeño y validación temporal antes de
+una implementación productiva.
+
+## Dashboard
+
+El proyecto incluye un dashboard ejecutivo desarrollado en Streamlit.
+
+Permite:
+
+- visualizar KPIs de riesgo;
+- filtrar por ciudad;
+- filtrar por nivel educativo;
+- analizar disponibilidad de `score_externo`;
+- explorar diferentes thresholds;
+- comparar predicción y realidad;
+- consultar importancia SHAP;
+- revisar un caso individual;
+- identificar clientes priorizados;
+- descargar los resultados.
+
+El dashboard utiliza los 2.460 registros del conjunto de prueba para mostrar una
+evaluación histórica del modelo.
 
 ## Estructura del repositorio
 
 ```text
-SOLARIS-FrescaMar-M3/
-│
-├── README.md
-├── requirements.txt
-├── .gitignore
+SOLARIS-FrescaMar/
 │
 ├── data/
 │   ├── README.md
@@ -104,166 +166,45 @@ SOLARIS-FrescaMar-M3/
 │       └── SOLARIS_FrescaMar_cartera_credito.csv
 │
 ├── notebooks/
-│   └── M3_PCD2_TorresCastellanos_Prototipo_Final.ipynb
+│   ├── M3_PCD2_TorresCastellanos_Prototipo.ipynb
+│   └── M4_PCD2_TorresCastellanos_Validacion.ipynb
+│
+├── src/
+│   ├── README.md
+│   └── generar_predicciones_dashboard.py
 │
 ├── models/
 │   └── artifacts/
 │       └── solaris_hgb_v1_20260915.pkl
 │
 ├── outputs/
-│   ├── auditoria_data_leakage.csv
-│   └── metricas_m3.json
+│   ├── m3/
+│   └── m4/
 │
-└── reports/
-    └── figures/
-        ├── target_distribution.png
-        ├── score_missing_by_target.png
-        ├── numeric_features_by_target.png
-        ├── mora_by_education.png
-        ├── mora_by_city.png
-        ├── correlation_matrix.png
-        ├── model_comparison.png
-        ├── threshold_metrics.png
-        ├── roc_curve.png
-        ├── precision_recall_curve.png
-        └── confusion_matrix.png
-```
-
-## Reproducibilidad
-
-El proyecto fue validado mediante una **ejecución limpia desde el repositorio de GitHub en Google Colab**.
-
-Para realizar la prueba:
-
-1. Se clonó una copia nueva del repositorio desde GitHub.
-2. Se instalaron las dependencias declaradas en `requirements.txt`.
-3. El notebook encontró automáticamente el dataset almacenado en `data/raw/`.
-4. Se ejecutó el notebook completo mediante `nbconvert`.
-5. La ejecución finalizó sin errores y reprodujo las métricas finales del modelo.
-
-La prueba ejecutó nuevamente todo el flujo:
-
-```text
-Carga de datos
-→ limpieza y normalización
-→ análisis exploratorio
-→ auditoría de data leakage
-→ Train/Test split
-→ baseline
-→ modelo challenger
-→ optimización con Optuna
-→ selección del threshold
-→ evaluación final
-→ serialización del modelo
-```
-
-### Entorno validado
-
-- Python 3.13.15
-- NumPy 2.1.3
-- Pandas 2.2.3
-- Scikit-learn 1.6.1
-- Matplotlib 3.10.0
-- Joblib 1.6.0
-- Optuna 5.0.0
-
-## Ejecución en Google Colab
-
-Para reproducir el proyecto desde GitHub se recomienda comenzar desde un entorno limpio de Google Colab.
-
-### 1. Clonar el repositorio
-
-```python
-!git clone https://github.com/torresnicolas004-afk/SOLARIS-FrescaMar-M3.git
-```
-
-### 2. Entrar al repositorio
-
-```python
-%cd /content/SOLARIS-FrescaMar-M3
-```
-
-### 3. Instalar las dependencias
-
-```python
-!pip install -q -r requirements.txt
-```
-
-### 4. Ejecutar el notebook completo
-
-```python
-!jupyter nbconvert \
-    --to notebook \
-    --execute notebooks/M3_PCD2_TorresCastellanos_Prototipo.ipynb \
-    --output-dir /content \
-    --output M3_prueba_reproducibilidad.ipynb \
-    --ExecutePreprocessor.timeout=1800
-```
-
-Al finalizar correctamente se genera una copia ejecutada del notebook en `/content/M3_prueba_reproducibilidad.ipynb`.
-
-## Ejecución local
-
-Clonar el repositorio:
-
-```bash
-git clone https://github.com/torresnicolas004-afk/SOLARIS-FrescaMar-M3.git
-```
-
-Entrar a la carpeta del proyecto:
-
-```bash
-cd SOLARIS-FrescaMar-M3
-```
-
-Instalar las dependencias:
-
-```bash
-pip install -r requirements.txt
-```
-
-El dataset debe encontrarse en:
-
-```text
-data/raw/SOLARIS_FrescaMar_cartera_credito.csv
-```
-
-Después se puede abrir el notebook ubicado en:
-
-```text
-notebooks/M3_PCD2_TorresCastellanos_Prototipo.ipynb
-```
-
-y ejecutarlo completamente.
-
-## Archivos generados
-
-El prototipo genera, entre otros, los siguientes artefactos:
-
-- `models/artifacts/solaris_hgb_v1_20260915.pkl`: pipeline final serializado y versionado.
-- `outputs/metricas_m3.json`: métricas finales del prototipo.
-- `outputs/auditoria_data_leakage.csv`: auditoría de variables utilizadas y excluidas.
-- `reports/figures/`: visualizaciones del EDA, comparación de modelos y evaluación final.
-
-El archivo `.pkl` fue recargado mediante Joblib y se verificó que reproduce correctamente las predicciones del pipeline original.
-
-## Limitaciones
-
-El dataset actual corresponde a un snapshot y no contiene `fecha_corte`, `fecha_evento` ni snapshots históricos de las variables.
-
-Por esta razón, la validación actual utiliza un split IID estratificado. Antes de una implementación productiva se requiere:
-
-- validación out-of-time;
-- definición temporal formal del evento de mora;
-- análisis de calibración;
-- monitoreo de drift;
-- validación del impacto de negocio con FrescaMar.
-
-También se identificó que la ausencia de `score_externo` presenta diferencias importantes entre las clases, por lo que este patrón debe seguir siendo monitoreado.
+├── reports/
+│   ├── figures/
+│   │   ├── m3/
+│   │   └── m4/
+│   ├── modulo_4/
+│   └── final/
+│
+├── dashboard/
+│   ├── app.py
+│   ├── README.md
+│   ├── data/
+│   │   └── solaris_predicciones.csv
+│   └── utils/
+│       ├── __init__.py
+│       └── graficos.py
+│
+├── .gitignore
+├── requirements.txt
+└── README.md
 
 ## Autor
 
-**Nicolás Torres Castellanos**  
+**Nicolás Torres Castellanos**
+
 Proyecto de Ciencia de Datos 2  
 Universidad de La Sabana  
-Periodo 2026-2
+Periodo académico 2026-2
